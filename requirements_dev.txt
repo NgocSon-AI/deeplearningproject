@@ -8,7 +8,10 @@ ipykernel
 pandas
 numpy
 seaborn
-
+torch
+torchvision
+torchsummary
+opencv-python
 
 pytest==7.1.3
 tox==3.25.1
@@ -17,4 +20,4 @@ mypy==0.971
 black==22.8.0
 
 
--e .
+#-e .

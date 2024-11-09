@@ -1,8 +1,28 @@
 from dataclasses import dataclass
-from torch.utils.data.dataloader import Dataloader
+from torch.utils.data.dataloader import DataLoader
 
 @dataclass
 class DataIngestionArtifact:
     train_file_path: str
     test_file_path: str
-     
+
+
+@dataclass
+class DataTransformationArtifact:
+    transformed_train_object: DataLoader
+    transformed_test_object: DataLoader
+    train_transform_file_path: str
+    test_transform_file_path: str
+
+@dataclass
+class ModelTrainerArtifact:
+    train_model_path: str
+
+@dataclass
+class ModelEvaluationArtifact:
+    model_accuracy: str
+
+@dataclass
+class ModelPusherArtifact:
+    bentom1_model_name: str
+    bentom1_service_name: str     

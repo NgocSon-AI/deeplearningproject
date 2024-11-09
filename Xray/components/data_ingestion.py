@@ -1,7 +1,8 @@
 import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Xray.cloud_storage.s3_operation import S30peration
-#from Xray.constant.training_pipeline import *
 from Xray.entity.artifact_entity import DataIngestionArtifact
 from Xray.entity.config_entity import DataIngestionConfig
 from Xray.exception import XRayException
@@ -23,10 +24,18 @@ class DataIngestion:
             
         except Exception as e:
             raise XRayException(e, sys)
-        
+
     def initiate_data_ingestion(self):
+        logging.info("Entered the initiate_date_ingestion method of Data ingestion class")
         try:
-            pass
+            self.get_data_from_s3()
+            data_ingestion_artifact: DataIngestionArtifact = DataIngestionArtifact(
+                train_file_path=self.data_ingestion_config.train_data_path,
+                test_file_path = self.data_ingestion_config.test_data_path,
+            )
+            logging.info("Exited the initiate_data_ingestion method of Data ingestion class")
+            return data_ingestion_artifact
+
         except Exception as e:
             raise XRayException(e, sys)
-        
+                
