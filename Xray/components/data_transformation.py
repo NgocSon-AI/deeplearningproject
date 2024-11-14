@@ -24,18 +24,18 @@ class DataTransformation:
         self.data_transformation_config = data_transformation_config
         self.data_ingestion_artifact = data_ingestion_artifact
     
-    def transformation_training_data(self)->transforms.Compose:
+    def transforming_training_data(self)->transforms.Compose:
         try:
             logging.info("Entered the transforming_training_data method of Data transformation class")
             train_transform: transforms.Compose = transforms.Compose(
                 [
                     transforms.Resize(self.data_transformation_config.RESIZE),
-                    transforms.CenterCrop(),
-                    transforms.ColorJitter(),
+                    transforms.CenterCrop(self.data_transformation_config.CENTER_CROP),
+                    transforms.ColorJitter(**self.data_transformation_config.color_jitter_transforms),
                     transforms.RandomHorizontalFlip(),
-                    transforms.RandomRotation(),
+                    transforms.RandomRotation(self.data_transformation_config.RANDOM_ROTATION),
                     transforms.ToTensor(),
-                    transforms.Normalize(),
+                    transforms.Normalize(**self.data_transformation_config.normalize_transforms),
                 ]
             )
             logging.info("Exited the transforming_training_data method of Data transformation class")
@@ -43,15 +43,15 @@ class DataTransformation:
         except Exception as e:
             raise XRayException(e, sys)
     
-    def transformation_testing_data(self)->transforms.Compose:
+    def transforming_testing_data(self)->transforms.Compose:
         try:
             logging.info("Entered the transforming_training_data method of Data transformation class")
             test_transform: transforms.Compose = transforms.Compose(
                 [
                     transforms.Resize(self.data_transformation_config.RESIZE),
-                    transforms.CenterCrop(),
+                    transforms.CenterCrop(self.data_transformation_config.CENTER_CROP),
                     transforms.ToTensor(),
-                    transforms.Normalize(),
+                    transforms.Normalize(**self.data_transformation_config.normalize_transforms),
                 ]
             )
             logging.info("Exited the transforming_training_data method of Data transformation class")

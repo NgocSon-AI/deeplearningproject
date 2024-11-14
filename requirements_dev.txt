@@ -8,10 +8,9 @@ ipykernel
 pandas
 numpy
 seaborn
-torch
-torchvision
-torchsummary
+bentoml
 opencv-python
+torchsummary
 
 pytest==7.1.3
 tox==3.25.1

@@ -8,15 +8,15 @@ TIMESTAMP: datetime = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
 
 
 #################################################################
-ARTIFACT_DIR: str="artifacts"
+ARTIFACT_DIR: str= "artifacts"
 
-BUCKET_NAME: str="imgsxraylung"
+BUCKET_NAME: str= "imgsxraylung"
 
-S3_DATA_FOLDER: str="data"
+S3_DATA_FOLDER: str= "data"
 
-CLASS_LABEL_1:str="NORMAL"
+CLASS_LABEL_1:str= "NORMAL"
 
-CLASS_LABEL_2:str="PNEUMONIA"
+CLASS_LABEL_2:str= "PNEUMONIA"
 
 # data transformation
 BRIGHTNESS: int = 0.10
