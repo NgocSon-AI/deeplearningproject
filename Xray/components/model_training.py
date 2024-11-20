@@ -200,9 +200,12 @@ class ModelTrainer:
 
                 self.test()
 
-            os.makedirs(self.model_trainer_config.artifact_dir, exist_ok=True)
-
-            torch.save(model, self.model_trainer_config.trained_model_path)
+            try:
+                os.makedirs(self.model_trainer_config.artifact_dir, exist_ok=True)
+                torch.save(model, self.model_trainer_config.trained_model_path)
+                print("Model saved successfully!")
+            except Exception as e:
+                print(f"An error occurred: {e}")
 
             train_transforms_obj = joblib.load(
                 self.data_transformation_artifact.train_transform_file_path

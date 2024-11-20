@@ -18,6 +18,7 @@ from Xray.logger import logging
 from Xray.ml.model.arch import Net
 
 
+
 class ModelEvaluation:
     def __init__(
         self,
@@ -38,7 +39,7 @@ class ModelEvaluation:
             )
             model: Module = Net()
 
-            model: Module = torch.load(self.model_trainer_artifact.train_model_path)
+            model: Module = torch.load(self.model_trainer_artifact.trained_model_path)
             model.to(self.model_evaluation_config.device)
             cost: Module = CrossEntropyLoss()
 
@@ -71,7 +72,7 @@ class ModelEvaluation:
                     predictions = torch.argmax(output, 1)
 
                     for i in zip(images, labels, predictions):
-                        h = list(1)
+                        h = list(i)
                         holder.append(h)
                     logging.info(
                         f"Actual labels: {labels}       Predictions : {predictions}     labels: {loss.item():.4f}"
@@ -79,9 +80,19 @@ class ModelEvaluation:
 
                     self.model_evaluation_config.test_loss += loss.item()
                     self.model_evaluation_config.test_accuracy += (predictions == labels).sum().item()
-                    logging.info(
-                        f"Model --> Loss: {self.model_evaluation_config.test_loss / self.model_evaluation_config.total_batch}   Accuracy: {(self.model_evaluation_config.test_accuracy/self.model_evaluation_config.total) * 100} %"
-                    )
+                    
+                    self.model_evaluation_config.total_batch += 1
+                    self.model_evaluation_config.total += labels.size(0)
+
+                    if self.model_evaluation_config.test_loss == 0:
+                        print("Error: total_batch is zero")
+                    if self.model_evaluation_config.total_batch == 0:
+                        print("Error: total is zero")
+                    else:
+                        logging.info(
+                            f"Model --> Loss: {self.model_evaluation_config.test_loss / self.model_evaluation_config.total_batch}   Accuracy: {(self.model_evaluation_config.test_accuracy/self.model_evaluation_config.total) * 100} %"
+                        )
+                    
             accuracy = (
                 self.model_evaluation_config.test_accuracy/self.model_evaluation_config.total
             )

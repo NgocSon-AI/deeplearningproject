@@ -1,6 +1,6 @@
 import os
 import sys
-
+from Xray.cloud_storage.s3_ops import S3Operation
 from Xray.entity.artifact_entity import ModelPusherArtifact
 from Xray.entity.config_entity import ModelPusherConfig
 from Xray.exception import XRayException
@@ -10,6 +10,7 @@ from Xray.logger import logging
 class ModelPusher:
     def __init__(self, model_pusher_config: ModelPusherConfig):
         self.model_pusher_config = model_pusher_config
+        self.s3 = S3Operation()
 
     def build_and_push_bento_image(self):
         logging.info("Entered build_and_push_bento_image method of ModelPusher class")
@@ -61,19 +62,30 @@ class ModelPusher:
 
         Output      :   Model pusher artifact
         """
-        logging.info("Entered initiate_model_pusher method of ModelPusher class")
+        # logging.info("Entered initiate_model_pusher method of ModelPusher class")
 
+        # try:
+        #     self.build_and_push_bento_image()
+
+        #     model_pusher_artifact = ModelPusherArtifact(
+        #         bentoml_model_name=self.model_pusher_config.bentoml_model_name,
+        #         bentoml_service_name=self.model_pusher_config.bentoml_service_name,
+        #     )
+
+        #     logging.info("Exited the initiate_model_pusher method of ModelPusher class")
+
+        #     return model_pusher_artifact
+
+        logging.info("Entered initiate_model_pusher method...")
         try:
-            self.build_and_push_bento_image()
-
-            model_pusher_artifact = ModelPusherArtifact(
-                bentoml_model_name=self.model_pusher_config.bentoml_model_name,
-                bentoml_service_name=self.model_pusher_config.bentoml_service_name,
+            self.s3.upload_file(
+                "model/model.pt",
+                "model.pt",
+                "imgslungxray",
+                remove=False,
             )
-
-            logging.info("Exited the initiate_model_pusher method of ModelPusher class")
-
-            return model_pusher_artifact
+            logging.info("Uploaded best model to s3 bucket")
+            logging.info("Exited initiate_model_pusher")
 
         except Exception as e:
             raise XRayException(e, sys)
